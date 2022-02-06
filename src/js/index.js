@@ -86,13 +86,39 @@ class Whatsapp {
     async on(type_update, callback) {
         if (type_update == "update") {
             this.wa.ev.on("messages.upsert", async function name(update) {
-                return callback(update);
+                if (typeof update == "object") {
+                    var json_data = {};
+                    json_data["is_outgoing"] = update["messages"][0]["key"]["fromMe"];
+                    json_data["chat_id"] = update["messages"][0]["key"]["remoteJid"];
+                    json_data["date"] = update["messages"][0]["messageTimestamp"];
+                    if (update["messages"][0]["message"]) {
+                        if (update["messages"][0]["message"]["conversation"]){
+                            json_data["text"] = update["messages"][0]["message"]["conversation"];
+                        }
+                        if (update["messages"][0]["message"]["audioMessage"]){
+                            json_data["audio"] = update["messages"][0]["message"]["audioMessage"];
+                        }
+                        if (update["messages"][0]["message"]["imageMessage"]){
+                            json_data["image"] = update["messages"][0]["message"]["imageMessage"];
+                        }
+                        if (update["messages"][0]["message"]["locationMessage"]){
+                            json_data["location"] = update["messages"][0]["message"]["locationMessage"];
+                        }
+                        if (update["messages"][0]["message"]["contactMessage"]){
+                            json_data["contact"] = update["messages"][0]["message"]["contactMessage"];
+                        }
+                        if (update["messages"][0]["message"]["documentMessage"]){
+                            json_data["document"] = update["messages"][0]["message"]["documentMessage"];
+                        }
+                    }
+                    return callback({ "message": json_data }, update);
+                }
             });
         }
     }
 
 }
 
-module.exports =  {
+module.exports = {
     Whatsapp
 };

@@ -1,6 +1,6 @@
 {
   "name": "whatsapp_client",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Lightweight library to make application or bot for whatsapp without selenium",
   "main": "src/js/index.js",
   "directories": {
