@@ -1,6 +1,6 @@
 {
   "name": "whatsapp_client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Lightweight library to make application or bot for whatsapp without selenium",
   "main": "src/js/index.js",
   "directories": {
@@ -14,7 +14,10 @@
     "url": "git+https://github.com/azkadev/whatsapp_client.git"
   },
   "keywords": [
-    "whatsapp", "whatsapp-bot", "whatsapp_client", "whatsapp-client"
+    "whatsapp",
+    "whatsapp-bot",
+    "whatsapp_client",
+    "whatsapp-client"
   ],
   "author": "@azkadev",
   "license": "ISC",
