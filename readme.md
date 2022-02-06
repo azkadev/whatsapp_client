@@ -7,6 +7,12 @@ Lightweight library to make application or bot for whatsapp without selenium
 
 Just Read on [wiki](https://github.com/azkadev/whatsapp_client/wiki) or read library native on [Baileys](https://adiwajshing.github.io/Baileys)
 
+## install
+
+```bash
+npm install whatsapp_client
+```
+
 ## Quick-Start
 
 ```js
