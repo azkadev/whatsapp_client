@@ -91,25 +91,63 @@ class Whatsapp {
                     json_data["is_outgoing"] = update["messages"][0]["key"]["fromMe"];
                     json_data["chat_id"] = update["messages"][0]["key"]["remoteJid"];
                     json_data["date"] = update["messages"][0]["messageTimestamp"];
-                    if (update["messages"][0]["message"]) {
-                        if (update["messages"][0]["message"]["conversation"]){
-                            json_data["text"] = update["messages"][0]["message"]["conversation"];
+                    if (typeof update["messages"][0]["message"] == "object") {
+                        var message = update["messages"][0]["message"];
+                        if (typeof message["conversation"] == "string" && message["conversation"]) {
+                            json_data["text"] = message["conversation"];
                         }
-                        if (update["messages"][0]["message"]["audioMessage"]){
-                            json_data["audio"] = update["messages"][0]["message"]["audioMessage"];
+                        if (typeof message["audioMessage"] == "object" && message["audioMessage"]) {
+                            json_data["audio"] = message["audioMessage"];
                         }
-                        if (update["messages"][0]["message"]["imageMessage"]){
-                            json_data["image"] = update["messages"][0]["message"]["imageMessage"];
+                        if (typeof message["imageMessage"] == "object" && message["imageMessage"]) {
+                            json_data["image"] = message["imageMessage"];
                         }
-                        if (update["messages"][0]["message"]["locationMessage"]){
-                            json_data["location"] = update["messages"][0]["message"]["locationMessage"];
+                        if (typeof message["locationMessage"] == "object" &&  message["locationMessage"]) {
+                            json_data["location"] = message["locationMessage"];
                         }
-                        if (update["messages"][0]["message"]["contactMessage"]){
-                            json_data["contact"] = update["messages"][0]["message"]["contactMessage"];
+                        if (typeof message["contactMessage"] == "object" && message["contactMessage"]) {
+                            json_data["contact"] = message["contactMessage"];
                         }
-                        if (update["messages"][0]["message"]["documentMessage"]){
-                            json_data["document"] = update["messages"][0]["message"]["documentMessage"];
+                        if (typeof message["documentMessage"] == "object" && message["documentMessage"]) {
+                            json_data["document"] = message["documentMessage"];
                         }
+
+                        if (typeof message["extendedTextMessage"] == "object" && message["extendedTextMessage"]) {
+                            var extendedTextMessage = message["extendedTextMessage"];
+                            try {
+                                var json_reply_to_message = {};
+                                if (typeof extendedTextMessage["contextInfo"] == "object" && extendedTextMessage["contextInfo"]) {
+                                    var contextInfo = extendedTextMessage["contextInfo"];
+                                    if (typeof contextInfo["quotedMessage"] == "object" && contextInfo["quotedMessage"]) {
+                                        var quotedMessage = contextInfo["quotedMessage"];
+                                        if (typeof quotedMessage["conversation"] == "string") {
+                                            json_reply_to_message["text"] = quotedMessage["conversation"];
+                                        }
+                                        if (typeof quotedMessage["audioMessage"] == "object" && quotedMessage["audioMessage"]) {
+                                            json_reply_to_message["audio"] = quotedMessage["audioMessage"];
+                                        }
+                                        if (typeof quotedMessage["imageMessage"] == "object" && quotedMessage["imageMessage"]) {
+                                            json_reply_to_message["image"] = quotedMessage["imageMessage"];
+                                        }
+                                        if (typeof quotedMessage["locationMessage"] == "object" && quotedMessage["locationMessage"]) {
+                                            json_reply_to_message["location"] = quotedMessage["locationMessage"];
+                                        }
+                                        if (typeof quotedMessage["contactMessage"] == "object" && quotedMessage["contactMessage"]) {
+                                            json_reply_to_message["contact"] = quotedMessage["contactMessage"];
+                                        }
+                                        if (typeof quotedMessage["documentMessage"] == "object" && quotedMessage["documentMessage"]) {
+                                            json_reply_to_message["document"] = quotedMessage["documentMessage"];
+                                        }
+                                    }
+
+                                }
+                                json_data["reply_to_message"] = json_reply_to_message;
+                                json_data["text"] = extendedTextMessage["text"];
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        }
+
                     }
                     return callback({ "message": json_data }, update);
                 }
